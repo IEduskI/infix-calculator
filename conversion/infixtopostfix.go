@@ -39,18 +39,34 @@ func InfixToPostfix(s string) (PostFix, error) {
 				continue
 			}
 
-			lastOP, _ := stack.Peek()
-			if op.IsGreaterOrEqual(lastOP) {
-				if op.Precedence() == lastOP.Precedence() {
-					lastOP, _ = stack.Pop()
+			length := stack.Length()
 
-					output = append(output, lastOP.Symbol())
+			// For to evaluate all operators
+			for i := 0; i < length; i++ {
+				lastOP, _ := stack.Peek()
+				if op.IsGreaterOrEqual(lastOP) {
+					if op.Precedence() == lastOP.Precedence() {
+						lastOP, _ = stack.Pop()
+
+						output = append(output, lastOP.Symbol())
+
+						stack.Push(op)
+						break
+					}
 
 					stack.Push(op)
-					continue
+					break
 				}
 
+				lastOP, _ = stack.Pop()
+
+				output = append(output, lastOP.Symbol())
+				continue
+			}
+
+			if stack.IsEmpty() {
 				stack.Push(op)
+				continue
 			}
 			continue
 		}

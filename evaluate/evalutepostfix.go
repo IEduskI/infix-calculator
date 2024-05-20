@@ -17,8 +17,10 @@ func Postfix(postFix string) (float64, error) {
 		if err != nil {
 			operator, _ := opFactory.Factory(token)
 
-			a, _ := stack.Pop()
+			// Last
 			b, _ := stack.Pop()
+			//Second last
+			a, _ := stack.Pop()
 
 			result := operator.Evaluate(a, b)
 
